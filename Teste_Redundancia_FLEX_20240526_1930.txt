@@ -1,0 +1,324 @@
+--
+-- PRD
+--
+
+FLEX
+    Endpoint:    realwave-claro-shared-database-prd.flexprd.aws.clarobrasil.mobi
+    Database:    rw_router
+    Schema:      rw_router_claro_flex
+    Table:       server
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+--	ANTES DO INÍCIO DAS ALTERAÇÕES
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+	CREATE TABLE rw_router_claro_flex."server_20240720" AS SELECT * FROM rw_router_claro_flex."server";
+
+	Updated Rows	8
+	Query	CREATE TABLE rw_router_claro_flex."server_20240526_2010" AS SELECT * FROM rw_router_claro_flex."server"
+	Start time	Sun May 26 20:08:52 BRT 2024
+	Finish time	Sun May 26 20:08:52 BRT 2024
+
+	SELECT id, "name", url, app_key, "parameter" 
+	FROM rw_router_claro_flex."server" 
+	WHERE id in (1,2,5,6) 
+	order by ID;
+
+	
+	id	name	url	app_key	parameter
+	1	AIR RJ	https://200.169.116.160/airrj/v1	950b3cc06e2c0135b2cd525400e91276	[NULL]
+	2	AIR SP	https://200.169.116.159/airsp/v1	950b3cc06e2c0135b2cd525400e91276	[NULL]
+	5	ODA RJ	https://200.169.116.160/oda/v1		950b3cc06e2c0135b2cd525400e91276	{"callbackUrl": "http://gateway-mck.int.apigw.claro.com.br/oda/v1/simcard/activation-notification?gw-app-key=b85ddd907ed20135b42f525400e91276&instanceId="}
+	6	ODA SP	https://200.169.116.159/oda/v1		950b3cc06e2c0135b2cd525400e91276	{"callbackUrl":"http://gateway-jag.int.apigw.claro.com.br/oda/v1/simcard/activation-notification?gw-app-key=b85ddd907ed20135b42f525400e91276&instanceId="}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+-- ROTEAMENTO PARA SP
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+	--
+	-- AIR RJ APONTARÁ PARA SP
+	--	
+		-- ANTES DA ALTERAÇÃO
+		
+			SELECT id, "name", url, app_key, "parameter" 
+			FROM rw_router_claro_flex."server" 
+			WHERE id = 1;
+			
+			id	name	url	app_key	parameter
+			1	AIR RJ	https://200.169.116.160/airrj/v1	950b3cc06e2c0135b2cd525400e91276	[NULL]
+
+		-- ALTERAÇÃO
+
+			UPDATE rw_router_claro_flex."server" 
+			SET url = 'https://200.169.116.159/airsp/v1'
+			WHERE id = 1;
+			
+			==>>
+			Updated Rows	1
+			Query	UPDATE rw_router_claro_flex."server" 
+							SET url = 'https://200.169.116.159/airsp/v1'
+							WHERE id = 1
+			Start time	Sun May 26 20:12:19 BRT 2024
+			Finish time	Sun May 26 20:12:19 BRT 2024
+
+			
+		-- APÓS A ALTERAÇÃO
+
+			SELECT id, "name", url, app_key, "parameter" 
+			FROM rw_router_claro_flex."server" 
+			WHERE id = 1;
+
+			1	AIR RJ	https://200.169.116.159/airsp/v1	950b3cc06e2c0135b2cd525400e91276	
+			
+	--
+	-- ODA RJ APONTARÁ PARA SP
+	--
+
+		-- ANTES DA ALTERAÇÃO
+		
+			SELECT id, "name", url, app_key, "parameter" 
+			FROM rw_router_claro_flex."server" 
+			WHERE id = 5;
+			
+			id	name	url	app_key	parameter
+			5	ODA RJ	https://200.169.116.160/oda/v1	950b3cc06e2c0135b2cd525400e91276	{"callbackUrl": "http://gateway-mck.int.apigw.claro.com.br/oda/v1/simcard/activation-notification?gw-app-key=b85ddd907ed20135b42f525400e91276&instanceId="}
+		
+		-- ALTERAÇÃO
+		
+			UPDATE rw_router_claro_flex."server" 
+			SET url = 'https://200.169.116.159/oda/v1' 
+			WHERE id = 5;
+			
+			Updated Rows	1
+				UPDATE rw_router_claro_flex."server" 
+				SET url = 'https://200.169.116.159/oda/v1' 
+				WHERE id = 5
+			Start time	Sun May 26 20:14:33 BRT 2024
+			Finish time	Sun May 26 20:14:33 BRT 2024
+
+			
+		-- APÓS A ALTERAÇÃO
+		
+			SELECT id, "name", url, app_key, "parameter" 
+			FROM rw_router_claro_flex."server" 
+			WHERE id = 5;
+	
+			==>> 
+			id	name	url	app_key	parameter
+			5	ODA RJ	https://200.169.116.159/oda/v1	950b3cc06e2c0135b2cd525400e91276	{"callbackUrl": "http://gateway-mck.int.apigw.claro.com.br/oda/v1/simcard/activation-notification?gw-app-key=b85ddd907ed20135b42f525400e91276&instanceId="}
+
+
+	SELECT id, "name", url, app_key, "parameter" 
+	FROM rw_router_claro_flex."server" 
+	WHERE id in (1,2,5,6) 
+	order by ID;
+		
+	id	name	url	app_key	parameter
+	1	AIR RJ	https://200.169.116.160/airrj/v1	950b3cc06e2c0135b2cd525400e91276	[NULL]
+	2	AIR SP	https://200.169.116.160/airrj/v1	950b3cc06e2c0135b2cd525400e91276	[NULL]
+	5	ODA RJ	https://200.169.116.160/oda/v1		950b3cc06e2c0135b2cd525400e91276	{"callbackUrl": "http://gateway-mck.int.apigw.claro.com.br/oda/v1/simcard/activation-notification?gw-app-key=b85ddd907ed20135b42f525400e91276&instanceId="}
+	6	ODA SP	https://200.169.116.160/oda/v1		950b3cc06e2c0135b2cd525400e91276	{"callbackUrl":"http://gateway-jag.int.apigw.claro.com.br/oda/v1/simcard/activation-notification?gw-app-key=b85ddd907ed20135b42f525400e91276&instanceId="}
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+-- ROTEAMENTO PARA RJ
+-- PASSO ANTERIOR ROTEOU TUDO PARA SP
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+	--
+	-- AIR SP APONTARÁ PARA RJ
+	--	
+		-- ANTES DA ALTERAÇÃO
+		
+			SELECT id, "name", url, app_key, "parameter" 
+			FROM rw_router_claro_flex."server" 
+			WHERE id in (1,2) 
+			ORDER BY id;
+									
+			id	name	url	app_key	parameter
+			1	AIR RJ	https://200.169.116.159/airsp/v1	950b3cc06e2c0135b2cd525400e91276	[NULL]
+			2	AIR SP	https://200.169.116.159/airsp/v1	950b3cc06e2c0135b2cd525400e91276	[NULL]
+			
+		-- ALTERAÇÃO
+
+			UPDATE rw_router_claro_flex."server" 
+			SET url = 'https://200.169.116.160/airrj/v1' 
+			WHERE in (1,2);
+			
+			Updated Rows	2
+				UPDATE rw_router_claro_flex."server" 
+				SET url = 'https://200.169.116.160/airrj/v1' 
+				WHERE id in (1,2)
+			Start time	Sun May 26 21:02:08 BRT 2024
+			Finish time	Sun May 26 21:02:08 BRT 2024
+
+
+		-- APÓS A ALTERAÇÃO
+			SELECT id, "name", url, app_key, "parameter" 
+			FROM rw_router_claro_flex."server" 
+			WHERE in (1,2) ;
+
+			==>>
+			id	name	url	app_key	parameter
+			1	AIR RJ	https://200.169.116.160/airrj/v1	950b3cc06e2c0135b2cd525400e91276	[NULL]
+			2	AIR SP	https://200.169.116.160/airrj/v1	950b3cc06e2c0135b2cd525400e91276	[NULL]
+
+			
+	--
+	-- ODA SP APONTARÁ PARA RJ
+	--
+
+		-- ANTES DA ALTERAÇÃO
+		
+			SELECT id, "name", url, app_key, "parameter" 
+			FROM rw_router_claro_flex."server" 
+			WHERE id in (5,6);
+			
+			id	name	url	app_key	parameter
+			5	ODA RJ	https://200.169.116.159/oda/v1	950b3cc06e2c0135b2cd525400e91276	{"callbackUrl": "http://gateway-mck.int.apigw.claro.com.br/oda/v1/simcard/activation-notification?gw-app-key=b85ddd907ed20135b42f525400e91276&instanceId="}
+			6	ODA SP	https://200.169.116.159/oda/v1	950b3cc06e2c0135b2cd525400e91276	{"callbackUrl":"http://gateway-jag.int.apigw.claro.com.br/oda/v1/simcard/activation-notification?gw-app-key=b85ddd907ed20135b42f525400e91276&instanceId="}
+		
+		-- ALTERAÇÃO
+		
+			UPDATE rw_router_claro_flex."server" 
+			SET url = 'https://200.169.116.160/oda/v1' 
+			WHERE id in (5,6);
+			
+			Updated Rows	2
+			Query	            UPDATE rw_router_claro_flex."server" 
+							SET url = 'https://200.169.116.160/oda/v1' 
+							WHERE id in (5,6)
+			Start time	Sun May 26 21:03:46 BRT 2024
+			Finish time	Sun May 26 21:03:46 BRT 2024
+
+			
+		-- APÓS A ALTERAÇÃO
+		
+			SELECT id, "name", url, app_key, "parameter" 
+			FROM rw_router_claro_flex."server" 
+			WHERE id in (5,6);
+	
+			==>> 
+			id	name	url	app_key	parameter
+			5	ODA RJ	https://200.169.116.160/oda/v1	950b3cc06e2c0135b2cd525400e91276	{"callbackUrl": "http://gateway-mck.int.apigw.claro.com.br/oda/v1/simcard/activation-notification?gw-app-key=b85ddd907ed20135b42f525400e91276&instanceId="}
+			6	ODA SP	https://200.169.116.160/oda/v1	950b3cc06e2c0135b2cd525400e91276	{"callbackUrl":"http://gateway-jag.int.apigw.claro.com.br/oda/v1/simcard/activation-notification?gw-app-key=b85ddd907ed20135b42f525400e91276&instanceId="}
+
+			
+---------------------------------------------------------------------------------------------------------------------------------------------------
+-- VOLTAR A ESTADO ANTES DO INÍCIO DO TESTE
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- SE TODOS OS TESTES ACIMA FORAM FEITOS, ENTÃO TODOS ESTÃO APONTANDO PARA SP.
+-- PEGA-SE OS VALORES QUE FORAM REGISTRADOS ANTES DO INÍCIO DOS TESTES E FAZ-SE UPDATES.
+	
+	/*---------------------------------------------------------------------------------------
+		DADOS ORIGINAIS - FORAM CAPTURADOS E REGISTRADOS NO INÍCIO DESTE DOCUMENTO
+		
+		SELECT id, "name", url, app_key, "parameter"
+		FROM rw_router_claro_flex."server" 
+		WHERE id in (1,2,5,6) 
+		order by ID;
+		
+		id	name	url								
+		1	AIR RJ	https://200.169.116.160/airrj/v1
+		2	AIR SP	https://200.169.116.159/airsp/v1
+		5	ODA RJ	https://200.169.116.160/oda/v1	
+		6	ODA SP	https://200.169.116.159/oda/v1	
+	
+	--------------------------------------------------------------------------------------- */
+	
+	-- SITUAÇÃO ATUAL APÓS VIRAR TODO O TRÁFEGO PARA RJ
+
+		SELECT id, "name", url, app_key, "parameter"
+		FROM rw_router_claro_flex."server" 
+		WHERE id in (1,2,5,6) 
+		order by ID;
+
+		id	name	url	app_key	parameter
+		1	AIR RJ	https://200.169.116.160/airrj/v1	950b3cc06e2c0135b2cd525400e91276	[NULL]
+		2	AIR SP	https://200.169.116.160/airrj/v1	950b3cc06e2c0135b2cd525400e91276	[NULL]
+		5	ODA RJ	https://200.169.116.160/oda/v1		950b3cc06e2c0135b2cd525400e91276	{"callbackUrl": "http://gateway-mck.int.apigw.claro.com.br/oda/v1/simcard/activation-notification?gw-app-key=b85ddd907ed20135b42f525400e91276&instanceId="}
+		6	ODA SP	https://200.169.116.160/oda/v1		950b3cc06e2c0135b2cd525400e91276	{"callbackUrl":"http://gateway-jag.int.apigw.claro.com.br/oda/v1/simcard/activation-notification?gw-app-key=b85ddd907ed20135b42f525400e91276&instanceId="}
+
+	-- REALIZAR OS UPDATES PARA VOLTAR AS URLs AOS VALORES ORIGINAIS DE ACORDO COM O ID
+
+		UPDATE rw_router_claro_flex."server" 
+		SET url = 'https://200.169.116.160/airrj/v1'
+		WHERE id = 1;
+
+		UPDATE rw_router_claro_flex."server" 
+		SET url = 'https://200.169.116.159/airsp/v1'
+		WHERE id = 2;
+
+		UPDATE rw_router_claro_flex."server" 
+		SET url = 'https://200.169.116.160/oda/v1'
+		WHERE id = 5;
+
+		UPDATE rw_router_claro_flex."server" 
+		SET url = 'https://200.169.116.159/oda/v1'
+		WHERE id = 6;
+
+		Queries	4
+		Updated Rows	4
+		Execute time (ms)	1061
+		Fetch time (ms)	0
+		Total time (ms)	1061
+		Start time	2024-05-26 22:02:20.631
+		Finish time	2024-05-26 22:02:21.696
+
+	-- CONFIRMAR SE OS VALORES RETORNARAM AOS VALORES ORIGINAIS, ANTES DO INÍCIO DOS TESTES
+	
+		SELECT id, "name", url, app_key, "parameter"
+		FROM rw_router_claro_flex."server" 
+		WHERE id in (1,2,5,6) 
+		order by ID;
+
+		id	name	url	app_key	parameter
+		1	AIR RJ	https://200.169.116.160/airrj/v1	950b3cc06e2c0135b2cd525400e91276	[NULL]
+		2	AIR SP	https://200.169.116.159/airsp/v1	950b3cc06e2c0135b2cd525400e91276	[NULL]
+		5	ODA RJ	https://200.169.116.160/oda/v1	950b3cc06e2c0135b2cd525400e91276	{"callbackUrl": "http://gateway-mck.int.apigw.claro.com.br/oda/v1/simcard/activation-notification?gw-app-key=b85ddd907ed20135b42f525400e91276&instanceId="}
+		6	ODA SP	https://200.169.116.159/oda/v1	950b3cc06e2c0135b2cd525400e91276	{"callbackUrl":"http://gateway-jag.int.apigw.claro.com.br/oda/v1/simcard/activation-notification?gw-app-key=b85ddd907ed20135b42f525400e91276&instanceId="}
+
+		==>> COMPARAR RESULTADO COM A ANOTAÇÃO INICIAIS DO INÍCIO DESTE DOCUMENTO 
+	
+
+	
+-------------MVNO-PRD
+
+
+Endpoint:    realwave-database.mvno.aws.clarobrasil.mobi
+Database:    rw_router
+Schema:      rw_router_claro_magalu
+Table:       server
+
+Backup Tabela: CREATE TABLE rw_router_claro_magalu."server_20240720" AS SELECT * FROM rw_router_claro_magalu."server";
+
+SELECT id, "name", url, app_key, "parameter" 
+	FROM rw_router_claro_magalu."server" 
+	WHERE id in (1,2,5,6) 
+	order by ID;
+
+
+--ida SP
+
+--UPDATE rw_router_claro_magalu."server" 
+			--SET url = 'https://gateway-jag.apigw.claro.com.br/airsp-mvno/v1'
+			--WHERE id = 1;
+			
+		--UPDATE rw_router_claro_magalu."server" 
+			--SET url = 'https://gateway-jag.apigw.claro.com.br/oda-mvno' 
+			--WHERE id = 5;
+
+--volta Normal
+
+--UPDATE rw_router_claro_magalu."server" 
+			--SET url = 'https://gateway-mck.apigw.claro.com.br/airrj-mvno/v1'
+			--WHERE id = 1;
+			
+		--UPDATE rw_router_claro_magalu."server" 
+			--SET url = 'https://gateway-mck.apigw.claro.com.br/oda-mvno' 
+			--WHERE id = 5;
+
+
